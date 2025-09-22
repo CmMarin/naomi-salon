@@ -68,8 +68,14 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-ID']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-ID', 'Accept', 'Origin', 'X-Requested-With']
 }));
+
+// Ensure methods header is always present (some platforms strip CORS methods on preflight)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  next();
+});
 
 // General API rate limiting
 const generalLimiter = rateLimit({
