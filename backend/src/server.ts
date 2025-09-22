@@ -17,21 +17,6 @@ const { initializeDatabase } = require('./database/pg.js');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Security headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'"]
-    }
-  },
-  crossOriginEmbedderPolicy: false
-}));
-
 // Configure CORS properly
 const allowedOrigins: string[] = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
@@ -52,7 +37,7 @@ const globToRegExp = (glob: string) => {
 
 const allowedOriginRegexes = originPatternsRaw.map(globToRegExp);
 
-app.use(cors({
+const corsOptions: cors.CorsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
@@ -68,17 +53,39 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-ID', 'Accept', 'Origin', 'X-Requested-With']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-ID', 'Accept', 'Origin', 'X-Requested-With'],
+  optionsSuccessStatus: 204
+};
 
-// Ensure methods header is always present (some platforms strip CORS methods on preflight)
+// Apply CORS first (before security headers and routes)
+app.use(cors(corsOptions));
+// Explicitly handle CORS preflight for all routes with the same options
+app.options('*', cors(corsOptions));
+
+// Defensive: ensure PATCH is always advertised on preflight
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Session-ID, Accept, Origin, X-Requested-With');
+    return res.sendStatus(204);
+  }
   next();
 });
 
-// Explicitly handle CORS preflight for all routes
-app.options('*', cors());
+// Security headers (after CORS)
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"]
+    }
+  },
+  crossOriginEmbedderPolicy: false
+}));
 
 // General API rate limiting
 const generalLimiter = rateLimit({
