@@ -90,7 +90,17 @@ export default function AdminDashboard() {
     if (!mounted) return; // Only load after mounting
     try {
       const bookingsData = await api.getBookings(language);
-      setBookings(bookingsData);
+      // Normalize date/time: ensure YYYY-MM-DD and HH:MM strings
+      const normalized = bookingsData.map((b: any) => ({
+        ...b,
+        appointment_date: typeof b.appointment_date === 'string' && b.appointment_date.includes('T')
+          ? b.appointment_date.split('T')[0]
+          : b.appointment_date,
+        appointment_time: typeof b.appointment_time === 'string'
+          ? b.appointment_time.slice(0, 5)
+          : b.appointment_time,
+      }));
+      setBookings(normalized);
     } catch (error) {
       console.error('Error loading bookings:', error);
     }
@@ -301,7 +311,7 @@ export default function AdminDashboard() {
 
   const sortedDates = Object.keys(bookingsByDate).sort();
   // Get month names from translation - properly handle array
-  const monthNamesTranslation = t('calendar.monthNames');
+  const monthNamesTranslation = t('booking.calendar.monthNames');
   const monthNames = Array.isArray(monthNamesTranslation) ? monthNamesTranslation : [
     'Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie',
     'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'
