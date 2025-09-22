@@ -77,6 +77,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Explicitly handle CORS preflight for all routes
+app.options('*', cors());
+
 // General API rate limiting
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
