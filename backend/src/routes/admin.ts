@@ -99,8 +99,8 @@ router.post('/login', loginLimiter, async (req, res) => {
     // Create JWT token
     const token = jwt.sign(
       { id: admin.id, username: admin.username, role: 'admin' },
-      process.env.JWT_SECRET!,
-      { expiresIn: process.env.TOKEN_EXPIRY || '24h' }
+      process.env.JWT_SECRET as string,
+      { expiresIn: process.env.TOKEN_EXPIRY || '24h' } as jwt.SignOptions
     );
 
     await logSecurityEvent('LOGIN_SUCCESS', null, clientIP, userAgent, 

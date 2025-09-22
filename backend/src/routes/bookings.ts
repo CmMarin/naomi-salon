@@ -90,7 +90,7 @@ router.post('/',
   bookingCooldownMiddleware,
   antiTrollingMiddleware,
   bookingValidation,
-  async (req, res) => {
+  async (req: express.Request, res: express.Response) => {
     try {
       // Check validation errors
       const errors = validationResult(req);
