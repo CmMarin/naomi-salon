@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom cursive font for Naomi brand name */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Great+Vibes&display=swap');
+
+.cursive-naomi {
+  font-family: 'Dancing Script', 'Great Vibes', cursive;
+  font-weight: 600;
+}
