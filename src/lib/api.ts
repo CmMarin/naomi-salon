@@ -51,8 +51,16 @@ export const api = {
       body: JSON.stringify(bookingData),
     });
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to create booking');
+      // Safely parse error body (may not always be JSON)
+      let message = 'Failed to create booking';
+      try {
+        const data = await response.json();
+        message = data?.error || message;
+      } catch (_) {
+        // fallback to status text if JSON parse fails
+        message = response.statusText || message;
+      }
+      throw new Error(message);
     }
     return response.json();
   },

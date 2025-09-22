@@ -54,10 +54,21 @@ export default function Home() {
     try {
       const occupiedSlots = await api.getOccupiedSlots();
       // Transform occupied slots to booking format for calendar
-      const bookingsData = occupiedSlots.map((slot: any) => ({
-        appointment_date: slot.appointment_date,
-        appointment_time: slot.appointment_time,
-      }));
+      const bookingsData = occupiedSlots.map((slot: any) => {
+        // Normalize date to YYYY-MM-DD and time to HH:MM to match UI expectations
+        const rawDate = slot.appointment_date;
+        const rawTime = slot.appointment_time;
+        const normalizedDate = typeof rawDate === 'string' && rawDate.includes('T')
+          ? rawDate.split('T')[0]
+          : rawDate;
+        const normalizedTime = typeof rawTime === 'string'
+          ? rawTime.slice(0, 5) // convert HH:MM:SS -> HH:MM
+          : rawTime;
+        return {
+          appointment_date: normalizedDate,
+          appointment_time: normalizedTime,
+        } as Pick<Booking, 'appointment_date' | 'appointment_time'>;
+      });
       setBookings(bookingsData);
     } catch (error) {
       console.error('Error loading occupied slots:', error);
