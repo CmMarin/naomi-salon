@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { dbGet, dbRun } from '../database/postgres';
+import { dbGet, dbRun } from '../database/connection';
 
 // Extend Express Request to include sessionId
 declare global {
