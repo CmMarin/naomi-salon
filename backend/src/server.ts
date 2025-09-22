@@ -33,22 +33,38 @@ app.use(helmet({
 }));
 
 // Configure CORS properly
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
-  'http://localhost:3000',
-  'https://naomi-salon.vercel.app', // Add your Vercel domain here
-  'https://your-custom-domain.com' // Add your custom domain if you have one
-];
+const allowedOrigins: string[] = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean);
+
+// Optional: wildcard patterns, e.g. "https://*.vercel.app"
+const originPatternsRaw: string[] = (process.env.ALLOWED_ORIGIN_PATTERNS || '')
+  .split(',')
+  .map(p => p.trim())
+  .filter(Boolean);
+
+const globToRegExp = (glob: string) => {
+  const escaped = glob.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+  const regex = '^' + escaped.replace(/\*/g, '.*') + '$';
+  return new RegExp(regex);
+};
+
+const allowedOriginRegexes = originPatternsRaw.map(globToRegExp);
 
 app.use(cors({
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+
+    const isExactAllowed = allowedOrigins.includes(origin);
+    const matchesPattern = allowedOriginRegexes.some(re => re.test(origin));
+    const allowInDev = process.env.NODE_ENV === 'development';
+
+    if (isExactAllowed || matchesPattern || allowInDev) {
       return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'), false);
     }
+    return callback(new Error('Not allowed by CORS'), false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -140,7 +156,10 @@ const startServer = async () => {
       console.log(`🚀 Server is running on port ${PORT}`);
       console.log(`📡 API available at http://localhost:${PORT}/api`);
       console.log(`🔒 Security features enabled`);
-      console.log(`🌍 CORS origins: ${allowedOrigins.join(', ')}`);
+      console.log(`🌍 CORS origins: ${allowedOrigins.join(', ') || '(none set)'}`);
+      if (allowedOriginRegexes.length) {
+        console.log(`🌐 CORS origin patterns: ${originPatternsRaw.join(', ')}`);
+      }
     });
   } catch (error) {
     console.error('Failed to start server:', error);
