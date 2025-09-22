@@ -1,6 +1,6 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import { dbRun, dbAll, dbGet } from '../database';
+import { dbRun, dbAll, dbGet } from '../database/db';
 import { verifyAdminToken } from './admin';
 import { bookingCooldownMiddleware, antiTrollingMiddleware, trackBookingAttempt } from '../middleware/security';
 import { sendBookingConfirmation } from '../services/emailService';

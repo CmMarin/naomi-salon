@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { dbGet, dbRun } from '../database';
+import { dbGet, dbRun } from '../database/db';
 import rateLimit from 'express-rate-limit';
 import { testEmailConfig } from '../services/emailService';
 
