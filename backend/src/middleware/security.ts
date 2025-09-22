@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { dbGet, dbRun } from '../database/connection';
+
+// Use require to avoid TypeScript import issues
+const { dbGet, dbRun } = require('../database/db.js');
 
 // Extend Express Request to include sessionId
 declare global {

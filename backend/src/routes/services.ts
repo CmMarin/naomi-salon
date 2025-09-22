@@ -1,12 +1,15 @@
 import express from 'express';
-import { dbAll } from '../database/connection';
 
 const router = express.Router();
+
+// Use require to avoid TypeScript import issues
+const { dbAll } = require('../database/db.js');
 
 // Get all services
 router.get('/', async (req, res) => {
   try {
     const language = req.query.lang as string || 'ro'; // Default to Romanian
+    
     const services = await dbAll('SELECT * FROM services ORDER BY name');
     
     // Transform services to include translated names and descriptions

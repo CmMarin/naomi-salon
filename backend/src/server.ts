@@ -4,13 +4,15 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import { initializeDatabase } from './database/connection';
 import { sessionMiddleware } from './middleware/security';
 import bookingRoutes from './routes/bookings';
 import servicesRoutes from './routes/services';
 import adminRoutes from './routes/admin';
 
 dotenv.config();
+
+// Use require for database to avoid TypeScript import issues
+const { initializeDatabase } = require('./database/db.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;

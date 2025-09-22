@@ -1,11 +1,13 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { dbGet, dbRun } from '../database/connection';
 import rateLimit from 'express-rate-limit';
 import { testEmailConfig } from '../services/emailService';
 
 const router = express.Router();
+
+// Use require to avoid TypeScript import issues
+const { dbGet, dbRun } = require('../database/db.js');
 
 // Rate limiting for login attempts
 const loginLimiter = rateLimit({
