@@ -1,23 +1,4 @@
 {
   "version": 2,
-  "name": "naomi-salon",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "@vercel/node"
-    }
-  },
-  "env": {
-    "NEXT_PUBLIC_API_URL": ""
-  },
-  "build": {
-    "env": {
-      "NEXT_PUBLIC_API_URL": ""
-    }
-  }
+  "name": "naomi-salon"
 }
