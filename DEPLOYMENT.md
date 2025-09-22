@@ -32,6 +32,7 @@ This guide will help you deploy your barbershop booking application to productio
    ```
    NODE_ENV=production
    PORT=10000
+   DATABASE_URL=postgresql://naomi_salon_db_user:4grAORV2wi0t08dVqg8lfMjsBLaL9XG7@dpg-d38pvs7fte5s73caijeg-a/naomi_salon_db
    JWT_SECRET=a7f8d9e6b4c2a1f5e3d7b9c8a6f4e2d8b7c5a9f6e4d2b8c7a5f9e6d4b2a8c7f5e3d9b6c4a2f8d5e7b9c6a4f2e8d7b5c9a6f4e2d8b7c5a9f6e4d2
    ADMIN_USERNAME=admin
    ADMIN_PASSWORD=admin123

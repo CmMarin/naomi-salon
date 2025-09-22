@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import { initializeDatabase } from './database/db';
+import { initializeDatabase } from './database/postgres';
 import { sessionMiddleware } from './middleware/security';
 import bookingRoutes from './routes/bookings';
 import servicesRoutes from './routes/services';

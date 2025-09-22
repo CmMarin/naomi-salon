@@ -1,5 +1,5 @@
 import express from 'express';
-import { dbAll } from '../database/db';
+import { dbAll } from '../database/postgres';
 
 const router = express.Router();
 
