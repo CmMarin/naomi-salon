@@ -48,6 +48,13 @@ lerna-debug.log*
 # Keep source database code tracked
 !/backend/src/database/**
 
+# But ignore SQLite artifacts even under src/database
+/backend/src/database/*.db
+/backend/src/database/*.sqlite
+/backend/src/database/*.sqlite3
+/backend/src/database/*-shm
+/backend/src/database/*-wal
+
 # IDE and Editor files
 .vscode/
 .idea/
