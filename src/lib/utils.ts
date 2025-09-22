@@ -126,8 +126,10 @@ export const formatTime = (hour: number, minute: number = 0): string => {
   return time.toTimeString().slice(0, 5);
 };
 
-export const formatPrice = (price: number): string => {
-  return `$${price.toFixed(2)}`;
+export const formatPrice = (price: number | string): string => {
+  const value = typeof price === 'number' ? price : Number.parseFloat(price);
+  if (!Number.isFinite(value)) return String(price);
+  return `$${value.toFixed(2)}`;
 };
 
 export const formatDuration = (minutes: number): string => {
