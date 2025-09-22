@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "services": [
+    {
+      "name": "naomi-barbershop-backend",
+      "runtime": "node",
+      "plan": "free",
+      "region": "frankfurt",
+      "buildCommand": "npm run render-build",
+      "startCommand": "npm start",
+      "healthCheckPath": "/api/health",
+      "envVars": [
+        {
+          "key": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "key": "PORT",
+          "value": "10000"
+        }
+      ]
+    }
+  ]
+}

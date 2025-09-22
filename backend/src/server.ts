@@ -33,7 +33,8 @@ app.use(helmet({
 // Configure CORS properly
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
   'http://localhost:3000',
-  'https://yourdomain.com'
+  'https://naomi-salon.vercel.app', // Add your Vercel domain here
+  'https://your-custom-domain.com' // Add your custom domain if you have one
 ];
 
 app.use(cors({

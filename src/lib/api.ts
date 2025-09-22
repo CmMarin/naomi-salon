@@ -1,5 +1,5 @@
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
+  ? process.env.NEXT_PUBLIC_API_URL || 'https://your-backend-url.onrender.com/api'
   : 'http://localhost:3001/api';
 
 export const api = {
