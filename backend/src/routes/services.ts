@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const services = await dbAll('SELECT * FROM services ORDER BY name');
     
     // Transform services to include translated names and descriptions
-    const translatedServices = services.map(service => ({
+    const translatedServices = services.map((service: any) => ({
       id: service.id,
       name: language === 'ru' 
         ? (service.name_ru || service.name) 
