@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
-// Use require to avoid TypeScript import issues
-const { dbGet, dbRun } = require('../database/db.js');
+// Use PostgreSQL helpers
+const { dbGet, dbRun } = require('../database/pg.js');
 
 // Extend Express Request to include sessionId
 declare global {

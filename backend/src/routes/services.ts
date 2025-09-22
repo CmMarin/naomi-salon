@@ -2,8 +2,8 @@ import express from 'express';
 
 const router = express.Router();
 
-// Use require to avoid TypeScript import issues
-const { dbAll } = require('../database/db.js');
+// Use PostgreSQL helpers
+const { dbAll } = require('../database/pg.js');
 
 // Get all services
 router.get('/', async (req, res) => {

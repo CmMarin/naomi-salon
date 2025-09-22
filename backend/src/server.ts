@@ -11,8 +11,8 @@ import adminRoutes from './routes/admin';
 
 dotenv.config();
 
-// Use require for database to avoid TypeScript import issues
-const { initializeDatabase } = require('./database/db.js');
+// Use require for PostgreSQL database
+const { initializeDatabase } = require('./database/pg.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;

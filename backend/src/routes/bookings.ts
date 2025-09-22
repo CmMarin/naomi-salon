@@ -6,8 +6,8 @@ import { sendBookingConfirmation } from '../services/emailService';
 
 const router = express.Router();
 
-// Use require to avoid TypeScript import issues
-const { dbAll, dbRun, dbGet } = require('../database/db.js');
+// Use PostgreSQL helpers
+const { dbAll, dbRun, dbGet } = require('../database/pg.js');
 
 // Input validation rules
 const bookingValidation = [

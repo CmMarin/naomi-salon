@@ -6,8 +6,8 @@ import { testEmailConfig } from '../services/emailService';
 
 const router = express.Router();
 
-// Use require to avoid TypeScript import issues
-const { dbGet, dbRun } = require('../database/db.js');
+// Use PostgreSQL helpers
+const { dbGet, dbRun } = require('../database/pg.js');
 
 // Rate limiting for login attempts
 const loginLimiter = rateLimit({
