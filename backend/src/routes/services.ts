@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
         ? (service.description_ru || service.description) 
         : (service.description_ro || service.description),
       duration: service.duration,
-      price: service.price,
+      price: typeof service.price === 'number' ? service.price : parseFloat(service.price),
       created_at: service.created_at
     }));
     
