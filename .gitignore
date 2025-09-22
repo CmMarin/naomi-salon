@@ -41,9 +41,12 @@ lerna-debug.log*
 *.db
 *.sqlite
 *.sqlite3
-database/
-backend/database/
-api/database/
+/database/
+/backend/database/
+/api/database/
+
+# Keep source database code tracked
+!/backend/src/database/**
 
 # IDE and Editor files
 .vscode/
